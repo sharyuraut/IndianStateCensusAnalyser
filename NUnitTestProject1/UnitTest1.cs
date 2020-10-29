@@ -31,6 +31,7 @@ namespace NUnitTestProject1
             stateRecord = new Dictionary<string, CensusDTO>();
         }
 
+        //TC 1.1
         [Test]
         public void GivenIndianCensusDataFile_ShouldReturnCensusDataCount()
         {
@@ -38,6 +39,16 @@ namespace NUnitTestProject1
             stateRecord = censusAnalyser.LoadCensusData(CensusAnalyser.Country.INDIA, indianStateCodeFilePath, indianStateCodeHeaders);
             Assert.AreEqual(29, totalRecord.Count);
             Assert.AreEqual(37, stateRecord.Count);
+        }
+
+        //TC 1.2
+        [Test]
+        public void GivenWrongIndianCensusDataFile_ShouldReturnCustomException()
+        {
+            var censusException = Assert.Throws<CensusAnalyserException>(() => censusAnalyser.LoadCensusData(CensusAnalyser.Country.INDIA, wrongIndianStateCensusFilePath, indianStateCensusHeaders));
+            var stateException = Assert.Throws<CensusAnalyserException>(() => censusAnalyser.LoadCensusData(CensusAnalyser.Country.INDIA, wrongIndianStateCensusFilePath, indianStateCodeHeaders));
+            Assert.AreEqual(CensusAnalyserException.ExceptionType.FILE_NOT_FOUND, censusException.eType);
+            Assert.AreEqual(CensusAnalyserException.ExceptionType.FILE_NOT_FOUND, stateException.eType);
         }
     }
 }
